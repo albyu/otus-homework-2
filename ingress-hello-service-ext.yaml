@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-hello-service-ext
+  annotations:
+  #  nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /health
+spec:
+  rules:
+  - host: arch.homework
+    http:
+      paths:
+      #- path: /myapp($|/)(.*)
+      - path: /otusapp/aboldyrev($|/)(.*)
+        pathType: ImplementationSpecific
+        #pathType: Prefix
+        backend:
+          service:
+            name: hello-service-ext
+            port:
+              number: 8000
+  ingressClassName: nginx

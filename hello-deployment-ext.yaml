@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-deployment-ext
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hello-j-ext
+  template:
+    metadata:
+      labels:
+        app: hello-j-ext
+    spec:
+      containers: 
+        - name: hello-j-ext
+          image: aboldyrev1111/otus-homework:health-app
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: web
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: web
+            initialDelaySeconds: 15
+            periodSeconds: 2 
+          ports:
+            - name: web
+              containerPort: 8000              
+              protocol: TCP
+#      imagePullSecrets:
+#        - name: regcred 
+    
